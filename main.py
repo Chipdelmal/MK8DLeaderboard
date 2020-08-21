@@ -42,4 +42,4 @@ for (rix, rank) in enumerate(range(1, ran+1)):
     ttS = tS.seconds + tS.microseconds * 1E-6
     times[rix] = ttS / 60
 sns.kdeplot(times, color="blue", shade=True)
-times
+times[44]

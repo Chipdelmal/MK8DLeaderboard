@@ -1,7 +1,10 @@
 
-import re
-from datetime import timedelta
+import time
+import seaborn as sns
+import functions as fun
+import constants as const
 from selenium import webdriver
+import matplotlib.pyplot as plt
 # from selenium.webdriver import ActionChains
 # from selenium.webdriver.common.keys import Keys
 
@@ -10,35 +13,33 @@ from selenium import webdriver
 (SPD, ITM) = ('200cc', 'NoItems')
 # Load driver and mainpage ----------------------------------------------------
 driver = webdriver.Chrome(DRV)
-driver.get('https://www.speedrun.com/mk8dx')
+driver.get(const.mainpage)
 # Setup dictionaries for buttons ----------------------------------------------
-catItems = {
-        'Items': '//*[@id="varnav23164"]/label[1]',
-        'NoItems': '//*[@id="varnav23164"]/label[2]'
-    }
-catSpeed = {
-        '150cc': '//*[@id="varnav11257"]/label[1]',
-        '200cc': '//*[@id="varnav11257"]/label[2]'
-    }
-tblRow = '//*[@id="leaderboarddiv"]/table/tbody/tr[{}]'
+
 # Click the category and items buttons
 (catBtn, spdBtn) = (
-        driver.find_elements_by_xpath(catSpeed.get(SPD))[0],
-        driver.find_elements_by_xpath(catItems.get(ITM))[0]
+        driver.find_elements_by_xpath(const.catSpeed.get(SPD))[0],
+        driver.find_elements_by_xpath(const.catItems.get(ITM))[0]
     )
 catBtn.click()
 spdBtn.click()
+time.sleep(3)
 # Get table -------------------------------------------------------------------
 table = driver.find_elements_by_tag_name('table')[0]
-
 # Iterate through table rows --------------------------------------------------
-rowIx = 2
-
-row = table.find_elements_by_xpath(tblRow.format(rowIx))[0]
-entryXPth = [tblRow.format(rowIx)+'/td[{}]'.format(i) for i in range(1, 6)]
-(place, name, time, version, date) = (
-        driver.find_elements_by_xpath(el)[0].text for el in entryXPth
-    )
-# row.text
-(h, m, s, ms) = [int(re.sub("[^0-9]", "", t)) for t in time.split()]
-str(timedelta(hours=h, minutes=m, seconds=s, milliseconds=ms))
+ran = 150
+times = [None] * ran
+for (rix, rank) in enumerate(range(1, ran+1)):
+    # rank = 44
+    # Preprocess table
+    rowIx = rank + 1
+    # row = table.find_elements_by_xpath(const.tblRow.format(rowIx))[0]
+    tblRowStr = const.tblRow.format(rowIx)+'/td[{}]'
+    tblRowXPth = [tblRowStr.format(i) for i in range(1, 6)]
+    (place, name, time, version, date) = fun.getRow(driver, tblRowXPth)
+    # row.text
+    tS = fun.getTiming(time)
+    ttS = tS.seconds + tS.microseconds * 1E-6
+    times[rix] = ttS / 60
+sns.kdeplot(times, color="blue", shade=True)
+times

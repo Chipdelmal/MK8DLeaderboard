@@ -53,6 +53,7 @@ for (rix, rank) in enumerate(range(1, rowNum)):
         )
 ldBrd = ldBrd.set_index('Rank')
 # Post process dataframe ------------------------------------------------------
+bins = round(rowNum / 2)
 fig, (ax1, ax2, ax3) = plt.subplots(3, 1, sharex=True)
 ax2 = sns.violinplot(
         x="Time", y='Version', hue="Version",
@@ -62,13 +63,14 @@ ax2 = sns.violinplot(
     )
 ax1 = sns.distplot(
         ldBrd[ldBrd['Version'] == 'Digital'].get('Time'),
-        bins=50, kde=False, color="b", ax=ax1
+        bins=bins, kde=False, color="b", ax=ax1
     )
 ax3 = sns.distplot(
         ldBrd[ldBrd['Version'] == 'Cartridge'].get('Time'),
-        bins=50, kde=False, color="r", ax=ax3
+        bins=bins, kde=False, color="r", ax=ax3
     )
 for p in ax3.patches:  # turn the histogram upside down
     p.set_height(-p.get_height())
-ax1.set_ylim(0, 10)
-ax3.set_ylim(-10, 0)
+ax1.set_ylim(0, 7.5)
+ax3.set_ylim(-7.5, 0)
+ax2.legend_.remove()

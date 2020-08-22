@@ -23,3 +23,9 @@ def getRow(driver, tblRowXPth):
             driver.find_elements_by_xpath(el)[0].text for el in tblRowXPth
         )
     return (place, name, time, version, date)
+
+
+def stripRank(rankStr):
+    cln = rankStr.replace('th', '').replace('st', '')
+    cln = cln.replace('nd', '').replace('rd', '')
+    return cln

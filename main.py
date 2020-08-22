@@ -1,7 +1,6 @@
 
 import time
 import dateparser
-import numpy as np
 import seaborn as sns
 import pandas as pd
 import functions as fun
@@ -26,61 +25,50 @@ driver.get(const.mainpage)
     )
 catBtn.click()
 spdBtn.click()
-time.sleep(3)
+time.sleep(5)
 # Get table -------------------------------------------------------------------
 table = driver.find_elements_by_tag_name('table')[0]
+rowNum = len(table.find_elements_by_tag_name('tr'))
 # Iterate through table rows --------------------------------------------------
-ran = 175
-times = [None] * ran
-(timesC, timesD) = ([], [])
-leadBrd = pd.DataFrame(columns=('Rank', 'Player', 'Time', 'Version', 'Date'))
-for (rix, rank) in enumerate(range(1, ran+1)):
-    # Preprocess table
+ldBrd = pd.DataFrame(columns=('Rank', 'Player', 'Time', 'Version', 'Date'))
+for (rix, rank) in enumerate(range(1, rowNum)):
     rowIx = rank + 1
+    # Load Row ----------------------------------------------------------------
     tblRowStr = const.tblRow.format(rowIx)+'/td[{}]'
     tblRowXPth = [tblRowStr.format(i) for i in range(1, 7)]
-    (rank, name, time, version, date) = fun.getRow(driver, tblRowXPth)
+    (rnk, nam, tme, ver, dte) = fun.getRow(driver, tblRowXPth)
     # Time --------------------------------------------------------------------
-    tS = fun.getTiming(time)
-    ttS = (tS.seconds + tS.microseconds * 1E-6) / 60
+    tS = fun.getTiming(tme)
+    tR = (tS.seconds + tS.microseconds * 1E-6) / 60
     # Date --------------------------------------------------------------------
-    dateS = dateparser.parse(date)
+    dteS = dateparser.parse(dte)
     # Rank --------------------------------------------------------------------
-    rankS = rank.replace('th', '').replace('st', '').replace('nd', '').replace('rd', '')
+    rnkS = fun.stripRank(rnk)
     # Add row to dataframe ----------------------------------------------------
-    leadBrd = leadBrd.append(
-            {'Rank': rankS, 'Player': name, 'Time': ttS, 'Version': version, 'Date': dateS},
-            ignore_index=True
+    ldBrd = ldBrd.append(
+            {
+                'Rank': rnkS, 'Player': nam, 'Time': tR,
+                'Version': ver, 'Date': dteS
+            }, ignore_index=True
         )
-    # Draft lists -------------------------------------------------------------
-    times[rix] = ttS
-    if version == 'Digital':
-        timesD.append(ttS)
-    else:
-        timesC.append(ttS)
-leadBrd = leadBrd.set_index('Rank')
-
-leadBrd
-
-# Plotting
-bins = 20
-# sns.distplot(times, bins=50, rug=True, hist=True, kde=False, color="#812184")
-sns.distplot(timesD, bins=bins, rug=True, hist=True,
-             kde=False, label='Digital', color="#1344b8")
-sns.distplot(timesC, bins=bins, rug=True, hist=True,
-             kde=False, label='Cartridge', color="#ed174b")
-timesSlices = [times[i] for i in np.arange(0, ran, 10)]
-[plt.axvline(i, lw=.15) for i in timesSlices]
-plt.legend(prop={'size': 12})
-plt.title('Leaderboard Frequency Histograms')
-plt.xlabel('Time (minutes)')
-plt.ylabel('Frequency')
-
-
-fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(2, 4), sharey=True)
-ax.set_title('Default violin plot')
-ax.set_ylabel('Observed values')
-ax.violinplot(
-        [timesD, timesC, times],
-        showmeans=False, showmedians=True, showextrema=False
+ldBrd = ldBrd.set_index('Rank')
+# Post process dataframe ------------------------------------------------------
+fig, (ax1, ax2, ax3) = plt.subplots(3, 1, sharex=True)
+ax2 = sns.violinplot(
+        x="Time", y='Version', hue="Version",
+        data=ldBrd, palette='seismic', split=True, ax=ax2,
+        cut=0
+        # scale="count", inner="stick"
     )
+ax1 = sns.distplot(
+        ldBrd[ldBrd['Version'] == 'Digital'].get('Time'),
+        bins=50, kde=False, color="b", ax=ax1
+    )
+ax3 = sns.distplot(
+        ldBrd[ldBrd['Version'] == 'Cartridge'].get('Time'),
+        bins=50, kde=False, color="r", ax=ax3
+    )
+for p in ax3.patches:  # turn the histogram upside down
+    p.set_height(-p.get_height())
+ax1.set_ylim(0, 10)
+ax3.set_ylim(-10, 0)

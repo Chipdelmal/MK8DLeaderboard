@@ -50,9 +50,11 @@ for (rix, rank) in enumerate(range(1, ran+1)):
 # Plotting
 bins = 20
 # sns.distplot(times, bins=50, rug=True, hist=True, kde=False, color="#812184")
-sns.distplot(timesD, bins=bins, rug=True, hist=True, kde=False, label='Digital', color="#1344b8")
-sns.distplot(timesC, bins=bins, rug=True, hist=True, kde=False, label='Cartridge', color="#ed174b")
-timesSlices = [times[i] for i in np.arange(0, 150, 10)]
+sns.distplot(timesD, bins=bins, rug=True, hist=True,
+             kde=False, label='Digital', color="#1344b8")
+sns.distplot(timesC, bins=bins, rug=True, hist=True,
+             kde=False, label='Cartridge', color="#ed174b")
+timesSlices = [times[i] for i in np.arange(0, ran, 10)]
 [plt.axvline(i, lw=.15) for i in timesSlices]
 plt.legend(prop={'size': 12})
 plt.title('Leaderboard Frequency Histograms')
@@ -60,11 +62,10 @@ plt.xlabel('Time (minutes)')
 plt.ylabel('Frequency')
 
 
-
 fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(2, 4), sharey=True)
 ax.set_title('Default violin plot')
 ax.set_ylabel('Observed values')
 ax.violinplot(
         [timesD, timesC, times],
-        showmeans=False, showmedians=False, showextrema=False
+        showmeans=False, showmedians=True, showextrema=False
     )

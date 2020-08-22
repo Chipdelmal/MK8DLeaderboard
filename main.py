@@ -2,6 +2,7 @@
 import time
 import numpy as np
 import seaborn as sns
+import pandas as pd
 import functions as fun
 import constants as const
 from selenium import webdriver
@@ -31,22 +32,36 @@ table = driver.find_elements_by_tag_name('table')[0]
 ran = 175
 times = [None] * ran
 (timesC, timesD) = ([], [])
+leadBrd = pd.DataFrame(columns=('Rank', 'Player', 'Time', 'Version', 'Date'))
 for (rix, rank) in enumerate(range(1, ran+1)):
-    # rank = 44
     # Preprocess table
     rowIx = rank + 1
-    # row = table.find_elements_by_xpath(const.tblRow.format(rowIx))[0]
     tblRowStr = const.tblRow.format(rowIx)+'/td[{}]'
     tblRowXPth = [tblRowStr.format(i) for i in range(1, 7)]
-    (place, name, time, version, date) = fun.getRow(driver, tblRowXPth)
-    # row.text
+    (rank, name, time, version, date) = fun.getRow(driver, tblRowXPth)
+    # Time --------------------------------------------------------------------
     tS = fun.getTiming(time)
     ttS = (tS.seconds + tS.microseconds * 1E-6) / 60
+    # Date --------------------------------------------------------------------
+    dateS = date.replace(' ago', '')
+    # Rank --------------------------------------------------------------------
+    rankS = rank.replace('th', '').replace('st', '').replace('nd', '').replace('rd', '')
+    # Add row to dataframe ----------------------------------------------------
+    leadBrd = leadBrd.append(
+            {'Rank': rankS, 'Player': name, 'Time': ttS, 'Version': version, 'Date': dateS},
+            ignore_index=True
+        )
+    # Draft lists -------------------------------------------------------------
     times[rix] = ttS
     if version == 'Digital':
         timesD.append(ttS)
     else:
         timesC.append(ttS)
+leadBrd = leadBrd.set_index('Rank')
+
+
+leadBrd
+
 # Plotting
 bins = 20
 # sns.distplot(times, bins=50, rug=True, hist=True, kde=False, color="#812184")

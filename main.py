@@ -1,5 +1,6 @@
 
 import time
+import dateparser
 import numpy as np
 import seaborn as sns
 import pandas as pd
@@ -43,7 +44,7 @@ for (rix, rank) in enumerate(range(1, ran+1)):
     tS = fun.getTiming(time)
     ttS = (tS.seconds + tS.microseconds * 1E-6) / 60
     # Date --------------------------------------------------------------------
-    dateS = date.replace(' ago', '')
+    dateS = dateparser.parse(date)
     # Rank --------------------------------------------------------------------
     rankS = rank.replace('th', '').replace('st', '').replace('nd', '').replace('rd', '')
     # Add row to dataframe ----------------------------------------------------
@@ -58,7 +59,6 @@ for (rix, rank) in enumerate(range(1, ran+1)):
     else:
         timesC.append(ttS)
 leadBrd = leadBrd.set_index('Rank')
-
 
 leadBrd
 

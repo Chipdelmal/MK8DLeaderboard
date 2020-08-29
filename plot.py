@@ -54,7 +54,7 @@ plt.yscale('log')
 (dFlt, cFlt) = (ldBrd['Version'] == 'Digital', ldBrd['Version'] == 'Cartridge')
 (dTimes, cTimes) = (ldBrd[dFlt]['Time'], ldBrd[cFlt]['Time'])
 # Colors ----------------------------------------------------------------------
-colors = ["#ed174b", "#1344b8"]
+colors = ['#ed174b', '#1344b8']
 palette = sns.set_palette(colors)
 # Plot ------------------------------------------------------------------------
 (fig, ax) = plt.subplots(1, 1, sharex=True, figsize=(10, 2))
@@ -65,8 +65,16 @@ ax = sns.violinplot(
     )
 # Post Plot -------------------------------------------------------------------
 handles, _ = ax.get_legend_handles_labels()
+(minT, maxT) = (min(list(ldBrd["Time"])), max(list(ldBrd["Time"])))
+pRange = (minT-minT*.01, maxT+maxT*.01)
 ax.legend(handles, ["D", "C"])
+ax.hlines(
+        [0], xmin=pRange[0], xmax=pRange[1],
+        colors='k', linewidth=.75, ls='dashed'
+    )
 ax.vlines(dTimes, ymin=-1, ymax=0, colors=colors[0], linewidth=.2)
 ax.vlines(cTimes, ymin=0, ymax=1, colors=colors[1], linewidth=.2)
 # Save ------------------------------------------------------------------------
+ax.set_xlim(*pRange)
+ax.legend_.remove()
 fig.savefig(OUT+'violin.png', dpi=500)

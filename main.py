@@ -9,7 +9,7 @@ from selenium import webdriver
 import matplotlib.pyplot as plt
 
 
-(DRV, OUT) = ('./chromedriver/chromedriver_macos', './out/')
+(DRV, OUT) = ('./chromedriver/chromedriver_linux', './out/')
 (SPD, ITM) = ('200cc', 'NoItems')
 # Load driver and mainpage ----------------------------------------------------
 driver = webdriver.Chrome(DRV)

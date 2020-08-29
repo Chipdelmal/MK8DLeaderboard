@@ -9,7 +9,7 @@ from selenium import webdriver
 
 
 (SPD, ITM) = (sys.argv[1], sys.argv[2])
-(DRV, OUT) = ('./chromedriver/chromedriver_macos', './out/')
+(DRV, OUT) = ('./chromedriver/chromedriver_linux', './out/')
 # (SPD, ITM) = ('200cc', 'NoItems')
 # Load driver and mainpage ----------------------------------------------------
 print('* Loading selenium scraper...')
@@ -49,9 +49,10 @@ for (rix, rank) in enumerate(range(1, rowNum)):
                 'Version': ver, 'Date': dteS
             }, ignore_index=True
         )
-ldBrd = ldBrd.set_index('Rank')
+# ldBrd = ldBrd.set_index('Rank')
 # Export CSV ------------------------------------------------------------------
+todayStamp = str(dateparser.parse('now'))[:10]
 print('* Exporting CSV...')
-ldBrd.to_csv('{}{}-{}.csv'.format(OUT, SPD, ITM))
+ldBrd.to_csv('{}{}_{}_{}.csv'.format(OUT, todayStamp, SPD, ITM))
 # Done ------------------------------------------------------------------------
-print('* Done!')
+# print('* Done!')

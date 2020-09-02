@@ -34,7 +34,7 @@ tracks48 = {
     }
 
 tracks32 = {
-        'trk': '//*[@id="category73495"]',
+        'trk': '//*[@id="category73494"]',
         'itm': {
                 'Items': '//*[@id="varnav23162"]/label[1]',
                 'NoItems': '//*[@id="varnav23162"]/label[2]'

@@ -27,7 +27,7 @@ catDict = const.catSelector(TRK)
 trkBtn.click()
 itmBtn.click()
 spdBtn.click()
-time.sleep(3)
+time.sleep(5)
 # Get table -------------------------------------------------------------------
 print('* Parsing leaderboard table...')
 table = driver.find_elements_by_tag_name('table')[0]
@@ -41,7 +41,7 @@ for (rix, rank) in enumerate(range(1, rowNum)):
     tblRowXPth = [tblRowStr.format(i) for i in range(1, 7)]
     (rnk, nam, tme, ver, dte) = fun.getRow(driver, tblRowXPth)
     # Time --------------------------------------------------------------------
-    tS = fun.getTiming(tme)
+    tS = fun.parseTimeString(tme)
     tR = (tS.seconds + tS.microseconds * 1E-6) / 60
     # Date --------------------------------------------------------------------
     dteS = dateparser.parse(dte)

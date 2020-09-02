@@ -13,7 +13,7 @@ combs = list(itertools.product(*[CAT, SPD, ITM]))
 # #############################################################################
 # Parse the leaderboards to CSV files
 # #############################################################################
-msg = '* Scraping ({}/{}): {}'
+msg = '* Scraping ({}/{}): {}          '
 for (i, cSet) in enumerate(combs):
     print(msg.format(i+1, len(combs), cSet), end='\r')
     cmd = ['python', 'scrape.py', cSet[0], cSet[1], cSet[2]]

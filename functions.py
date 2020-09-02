@@ -3,6 +3,23 @@ import re
 from datetime import timedelta
 
 
+regex = re.compile(
+        r'((?P<hours>\d+?)h)?((?P<minutes>\d+?)m)?((?P<seconds>\d+?)s)?((?P<milliseconds>\d+?)ms)?'
+    )
+
+
+def parseTimeString(timeStr):
+    clnTime = timeStr.replace(' ', '')
+    parts = regex.match(clnTime)
+    parts = parts.groupdict()
+    time_params = {}
+    for name in parts.keys():
+        if parts[name] is not None:
+            time_params[name] = int(parts[name])
+    time_params
+    return timedelta(**time_params)
+
+
 def parseTime(ts):
     return [int(re.sub("[^0-9]", "", t)) for t in ts]
 
@@ -12,9 +29,12 @@ def getTiming(time):
     if len(ts) == 4:
         (h, m, s, ms) = parseTime(ts)
         td = timedelta(hours=h, minutes=m, seconds=s, milliseconds=ms)
-    else:
+    elif len(ts) == 3:
         (h, m, s) = parseTime(ts)
         td = timedelta(hours=h, minutes=m, seconds=s)
+    else:
+        (m, s) = parseTime(ts)
+        td = timedelta(hours=0, minutes=m, seconds=s)
     return td
 
 

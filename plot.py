@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from matplotlib import gridspec
 
 
-(IN, FILE, OUT) = ('./out/', '2020-08-29_200cc_NoItems.csv', './img/')
+(IN, FILE, OUT) = ('./out/', '2020-09-02_Nitro_200cc_Items.csv', './img/')
 # Read dataframe --------------------------------------------------------------
 ldBrd = pd.read_csv(IN+FILE)
 colors = ['#1344b8', '#ed174b']
@@ -66,4 +66,4 @@ axb.set_xlim(*pRange)
 # #############################################################################
 # Save
 # #############################################################################
-fig.savefig(OUT+'violin.png', dpi=500, bbox='tight', pad_inches=.1)
+fig.savefig(OUT+FILE.split('.')[0]+'.png', dpi=500, bbox='tight', pad_inches=.1)

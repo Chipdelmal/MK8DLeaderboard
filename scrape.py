@@ -8,13 +8,14 @@ import constants as const
 from selenium import webdriver
 
 
-(SPD, ITM) = (sys.argv[1], sys.argv[2])
+(ITM, SPD, CAT) = (str(i) for i in (sys.argv[3], sys.argv[2], sys.argv[1]))
 (DRV, OUT) = ('./chromedriver/chromedriver_linux', './out/')
 # (SPD, ITM) = ('200cc', 'NoItems')
+print('[I: {} S: {} C: {}]'.format(ITM, SPD, CAT))
 # Load driver and mainpage ----------------------------------------------------
 print('* Loading selenium scraper...')
 driver = webdriver.Chrome(DRV)
-driver.get(const.mainpage)
+driver.get('{}#{}_Tracks'.format(const.mainpage, CAT))
 # Setup dictionaries for buttons ----------------------------------------------
 print('* Selecting leaderboard...')
 (catBtn, spdBtn) = (
@@ -53,6 +54,7 @@ for (rix, rank) in enumerate(range(1, rowNum)):
 # Export CSV ------------------------------------------------------------------
 todayStamp = str(dateparser.parse('now'))[:10]
 print('* Exporting CSV...')
-ldBrd.to_csv('{}{}_{}_{}.csv'.format(OUT, todayStamp, SPD, ITM))
+ldBrd.to_csv('{}{}_{}_{}_{}.csv'.format(OUT, todayStamp, CAT, SPD, ITM))
 # Done ------------------------------------------------------------------------
-# print('* Done!')
+driver.quit()
+print('* Done!')

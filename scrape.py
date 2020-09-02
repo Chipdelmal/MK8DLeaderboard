@@ -8,23 +8,26 @@ import constants as const
 from selenium import webdriver
 
 
-(ITM, SPD, CAT) = (str(i) for i in (sys.argv[3], sys.argv[2], sys.argv[1]))
+(TRK, SPD, ITM) = (sys.argv[1], sys.argv[2], sys.argv[3])
 (DRV, OUT) = ('./chromedriver/chromedriver_linux', './out/')
-# (SPD, ITM) = ('200cc', 'NoItems')
-print('[I: {} S: {} C: {}]'.format(ITM, SPD, CAT))
+# (TRK, SPD, ITM) = ('Nitro', '200cc', 'NoItems')
+# print('[T: {} - I: {} - S: {}]'.format(TRK, ITM, SPD))
 # Load driver and mainpage ----------------------------------------------------
 print('* Loading selenium scraper...')
 driver = webdriver.Chrome(DRV)
-driver.get('{}#{}_Tracks'.format(const.mainpage, CAT))
+driver.get(const.mainpage)
 # Setup dictionaries for buttons ----------------------------------------------
 print('* Selecting leaderboard...')
-(catBtn, spdBtn) = (
-        driver.find_elements_by_xpath(const.catSpeed.get(SPD))[0],
-        driver.find_elements_by_xpath(const.catItems.get(ITM))[0]
+catDict = const.catSelector(TRK)
+(trkBtn, spdBtn, itmBtn) = (
+        driver.find_elements_by_xpath(catDict.get('trk'))[0],
+        driver.find_elements_by_xpath(catDict.get('spd').get(SPD))[0],
+        driver.find_elements_by_xpath(catDict.get('itm').get(ITM))[0]
     )
-catBtn.click()
+trkBtn.click()
+itmBtn.click()
 spdBtn.click()
-time.sleep(5)
+time.sleep(3)
 # Get table -------------------------------------------------------------------
 print('* Parsing leaderboard table...')
 table = driver.find_elements_by_tag_name('table')[0]
@@ -54,7 +57,7 @@ for (rix, rank) in enumerate(range(1, rowNum)):
 # Export CSV ------------------------------------------------------------------
 todayStamp = str(dateparser.parse('now'))[:10]
 print('* Exporting CSV...')
-ldBrd.to_csv('{}{}_{}_{}_{}.csv'.format(OUT, todayStamp, CAT, SPD, ITM))
+ldBrd.to_csv('{}{}_{}_{}_{}.csv'.format(OUT, todayStamp, TRK, SPD, ITM))
 # Done ------------------------------------------------------------------------
 driver.quit()
 print('* Done!')

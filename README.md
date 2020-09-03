@@ -35,6 +35,14 @@ Rank, Player, Time, Version, Date
 
 for each one the submissions.
 
+Alternatively, run the following command:
+
+```bash
+python scrapeAll.py
+```
+
+to download all the combinations of the leaderboards in the current date.
+
 ### Data Visualizer
 
 UNDER DEVELOPMENT

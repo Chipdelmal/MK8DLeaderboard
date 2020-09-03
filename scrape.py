@@ -9,7 +9,7 @@ from selenium import webdriver
 
 
 (TRK, SPD, ITM) = (sys.argv[1], sys.argv[2], sys.argv[3])
-(DRV, OUT) = ('./chromedriver/chromedriver_linux', './out/')
+(DRV, OUT) = ('./chromedriver/chromedriver_macos', './out/')
 # (TRK, SPD, ITM) = ('Nitro', '200cc', 'NoItems')
 # print('[T: {} - I: {} - S: {}]'.format(TRK, ITM, SPD))
 # Load driver and mainpage ----------------------------------------------------

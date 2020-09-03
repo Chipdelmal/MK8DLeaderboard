@@ -16,7 +16,7 @@ combs = list(itertools.product(*[CAT, SPD, ITM]))
 msg = '* Scraping ({}/{}): {}          '
 for (i, cSet) in enumerate(combs):
     print(msg.format(i+1, len(combs), cSet), end='\r')
-    cmd = ['python', 'scrape.py', cSet[0], cSet[1], cSet[2]]
+    cmd = ['python3', 'scrape.py', cSet[0], cSet[1], cSet[2]]
     process = Popen(cmd, stdout=PIPE, stderr=PIPE)
     stdout, stderr = process.communicate()
     process.wait()

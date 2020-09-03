@@ -1,11 +1,16 @@
 
+import sys
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
 
-
-(IN, FILE, OUT) = ('./out/', '2020-09-02_Nitro_200cc_Items.csv', './img/')
+(IN, FILE, OUT) = (
+        '/home/chipdelmal/MEGAsync/MK8DLead/',
+        '2020-09-02_Nitro_200cc_Items.csv',
+        '/home/chipdelmal/MEGAsync/MK8DLead/img/'
+    )
+FILE = sys.argv[1]
 # Read dataframe --------------------------------------------------------------
 ldBrd = pd.read_csv(IN+FILE)
 colors = ['#1344b8', '#ed174b']
@@ -48,7 +53,7 @@ ax.set_yticklabels('')
 # Histograms ##################################################################
 rowNum = ldBrd.shape[0]
 bins = round(rowNum / 2)
-hi = 8
+hi = 10
 axt = sns.distplot(
         ldBrd[dFlt].get('Time'),
         bins=bins, kde=False, color=colors[0], ax=axt

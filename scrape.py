@@ -9,9 +9,11 @@ from selenium import webdriver
 
 
 (TRK, SPD, ITM) = (sys.argv[1], sys.argv[2], sys.argv[3])
-(DRV, OUT) = ('./chromedriver/chromedriver_macos', './out/')
+(DRV, OUT) = (
+        './chromedriver/chromedriver_macos',
+        './MK8DLead/'
+    )
 # (TRK, SPD, ITM) = ('Nitro', '200cc', 'NoItems')
-# print('[T: {} - I: {} - S: {}]'.format(TRK, ITM, SPD))
 # Load driver and mainpage ----------------------------------------------------
 print('* Loading selenium scraper...')
 driver = webdriver.Chrome(DRV)
@@ -27,7 +29,7 @@ catDict = const.catSelector(TRK)
 trkBtn.click()
 itmBtn.click()
 spdBtn.click()
-time.sleep(5)
+time.sleep(3)
 # Get table -------------------------------------------------------------------
 print('* Parsing leaderboard table...')
 table = driver.find_elements_by_tag_name('table')[0]

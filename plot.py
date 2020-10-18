@@ -4,10 +4,11 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
+plt.rcParams["font.family"]="STSong"
 
 (IN, FILE, OUT) = (
     '/home/chipdelmal/Documents/MK8D/Leaderboard/',
-    '2020-09-02_48_200cc_NoItems.csv',
+    '2020-10-17_48_200cc_NoItems.csv',
     '/home/chipdelmal/Documents/MK8D/Leaderboard/img/'
 )
 # FILE = sys.argv[1]
@@ -31,7 +32,7 @@ axt = fig.add_subplot(spec[2])
 ax = sns.violinplot(
     y=["Attempts"] * len(ldBrd), x='Time', hue="Version",
     data=ldBrd, palette=palette, split=True, ax=ax,
-    cut=0, orient="h", saturation=.75, inner=None, linewidth=.1
+    cut=0, orient="h", saturation=.85, inner=None, linewidth=.1
 )
 # Post Plot -------------------------------------------------------------------
 handles, _ = ax.get_legend_handles_labels()
@@ -57,11 +58,11 @@ bins = round(rowNum / 2)
 hi = .25
 axt = sns.distplot(
     ldBrd[dFlt].get('Time'),
-    bins=bins, kde=False, color=colors[0], ax=axt
+    bins=bins, kde=False, color='#ffffff', ax=axt
 )
 axb = sns.distplot(
     ldBrd[cFlt].get('Time'),
-    bins=bins, kde=False, color=colors[1], ax=axb
+    bins=bins, kde=False, color='#ffffff', ax=axb
 )
 for p in axt.patches:
     p.set_height(-p.get_height())
@@ -85,7 +86,7 @@ for i in range(entries):
                 colors=colors[1], linewidth=.2
             )
         axb.text(
-            timeL[i], yPos, str(i+1) + ': ' + nameL[i],
+            timeL[i], yPos, str(i + 1) + ': ' + nameL[i],
             fontsize=2.5, rotation=90,
             horizontalalignment='right',
             verticalalignment=yAlign
@@ -104,7 +105,7 @@ for i in range(entries):
                 colors=colors[0], linewidth=.2
             )
         axt.text(
-            timeL[i], -yPos, str(i+1) + ': ' + nameL[i],
+            timeL[i], -yPos, str(i + 1) + ': ' + nameL[i],
             fontsize=2.5, rotation=90,
             horizontalalignment='right',
             verticalalignment=yAlign

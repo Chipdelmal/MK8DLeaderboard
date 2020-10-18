@@ -6,17 +6,20 @@ import pandas as pd
 import functions as fun
 import constants as const
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 
 
 (TRK, SPD, ITM) = (sys.argv[1], sys.argv[2], sys.argv[3])
 (DRV, OUT) = (
         './chromedriver/chromedriver_macos',
-        './MK8DLead/'
+        '/Users/sanchez.hmsc/Documents/MK8D/Leaderboard/'
     )
 # (TRK, SPD, ITM) = ('Nitro', '200cc', 'NoItems')
 # Load driver and mainpage ----------------------------------------------------
 print('* Loading selenium scraper...')
-driver = webdriver.Chrome(DRV)
+chrome_options = Options()
+chrome_options.add_argument("--headless")
+driver = webdriver.Chrome(DRV, options=chrome_options)
 driver.get(const.mainpage)
 # Setup dictionaries for buttons ----------------------------------------------
 print('* Selecting leaderboard...')

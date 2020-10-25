@@ -23,6 +23,8 @@ palette = sns.set_palette(palCol)
 (dFlt, cFlt) = (ldBrd['Version'] == 'Digital', ldBrd['Version'] == 'Cartridge')
 (dTimes, cTimes) = (ldBrd[dFlt]['Time'], ldBrd[cFlt]['Time'])
 (nameL, timeL) = [list(i) for i in (ldBrd['Player'], ldBrd['Time'])]
+
+nameL
 # #############################################################################
 # Plots
 # #############################################################################
@@ -51,8 +53,30 @@ for (i, time) in enumerate(cTimes):
     else:
         (a, b) = (.5, 1)
     ax.vlines([time], a, b, colors=colors[1], lw=1)
+# Both ------------------------------------------------------------------------
 ax.vlines(dTimes, 0, -1, colors=colors[0], lw=.05)
 ax.vlines(cTimes, 0, +1, colors=colors[1], lw=.05)
+entries = len(nameL)
+(top, bot) = (True, True)
+for i in range(entries):
+    if list(cFlt)[i]:
+        if top:
+            (yPos, yAlign) = (+0.025, 'top')
+        else:
+            (yPos, yAlign) = (+0.975, 'bottom')
+        top = not top
+    else:
+        if bot:
+            (yPos, yAlign) = (-0.025, 'bottom')
+        else:
+            (yPos, yAlign) = (-0.975, 'top')
+        bot = not bot
+    ax.text(
+        timeL[i], yPos, str(i + 1) + ': ' + nameL[i],
+        fontsize=2.5, rotation=90,
+        horizontalalignment='right',
+        verticalalignment=yAlign
+    )
 # #############################################################################
 # Save
 # #############################################################################

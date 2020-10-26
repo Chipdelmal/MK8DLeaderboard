@@ -23,8 +23,6 @@ palette = sns.set_palette(palCol)
 (dFlt, cFlt) = (ldBrd['Version'] == 'Digital', ldBrd['Version'] == 'Cartridge')
 (dTimes, cTimes) = (ldBrd[dFlt]['Time'], ldBrd[cFlt]['Time'])
 (nameL, timeL) = [list(i) for i in (ldBrd['Player'], ldBrd['Time'])]
-
-nameL
 # #############################################################################
 # Plots
 # #############################################################################
@@ -58,18 +56,45 @@ ax.vlines(dTimes, 0, -1, colors=colors[0], lw=.05)
 ax.vlines(cTimes, 0, +1, colors=colors[1], lw=.05)
 entries = len(nameL)
 (top, bot) = (True, True)
+(pA, pB) = (.025, .975)
+(cA, cB) = ([0, 0], [0, 0])
+delta = .45
 for i in range(entries):
     if list(cFlt)[i]:
         if top:
-            (yPos, yAlign) = (+0.025, 'top')
+            if cA[0] == 0:
+                (yPos, yAlign) = (pA + cA[0], 'top')
+            else:
+                (yPos, yAlign) = (pA + cA[0], 'bottom')
+            cA[0] = cA[0] + delta
+            if cA[0] >= delta + .1:
+                cA[0] = 0
         else:
-            (yPos, yAlign) = (+0.975, 'bottom')
+            if cA[1] == 0:
+                (yPos, yAlign) = (pB - cA[1], 'bottom')
+            else:
+                (yPos, yAlign) = (pB - cA[1], 'top')
+            cA[1] = cA[1] + delta
+            if cA[1] >= delta + .1:
+                cA[1] = 0
         top = not top
     else:
         if bot:
-            (yPos, yAlign) = (-0.025, 'bottom')
+            if cB[0] == 0:
+                (yPos, yAlign) = (-pA - cB[0], 'bottom')
+            else:
+                (yPos, yAlign) = (-pA - cB[0], 'top')
+            cB[0] = cB[0] + delta
+            if cB[0] >= delta + .1:
+                cB[0] = 0
         else:
-            (yPos, yAlign) = (-0.975, 'top')
+            if cB[1] == 0:
+                (yPos, yAlign) = (-pB + cB[1], 'top')
+            else:
+                (yPos, yAlign) = (-pB + cB[1], 'bottom')
+            cB[1] = cB[1] + delta
+            if cB[1] >= delta + .1:
+                cB[1] = 0
         bot = not bot
     ax.text(
         timeL[i], yPos, str(i + 1) + ': ' + nameL[i],
@@ -86,5 +111,5 @@ ax.set_yticklabels('')
 # Save ------------------------------------------------------------------------
 fig.savefig(
     OUT + FILE.split('.')[0] + '.png',
-    dpi=500, bbox='tight', pad_inches=.1
+    dpi=500, pad_inches=.1
 )

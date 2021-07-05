@@ -1,14 +1,12 @@
 
-import sys
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-from matplotlib import gridspec
-plt.rcParams["font.family"]="STSong"
+plt.rcParams["font.family"]="TakaoPGothic"
 
 (IN, FILE, OUT) = (
     '/home/chipdelmal/Documents/MK8D/Leaderboard/',
-    '2020-10-17_48_200cc_NoItems.csv',
+    '2020-10-25_48_200cc_NoItems.csv',
     '/home/chipdelmal/Documents/MK8D/Leaderboard/img/'
 )
 # FILE = sys.argv[1]
@@ -26,7 +24,7 @@ palette = sns.set_palette(palCol)
 # #############################################################################
 # Plots
 # #############################################################################
-fig = plt.figure(figsize=(25, 5))
+fig = plt.figure(figsize=(25, 4))
 ax = fig.add_subplot()
 (minT, maxT) = (min(list(ldBrd["Time"])), max(list(ldBrd["Time"])))
 (pRange, height) = ((minT - minT * .01, maxT + maxT * .01), .5)

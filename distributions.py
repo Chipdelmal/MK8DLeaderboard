@@ -13,7 +13,7 @@ plt.rcParams["font.family"]="TakaoPGothic"
 # Read dataframe --------------------------------------------------------------
 ldBrd = pd.read_csv(IN + FILE)
 colors = ['#2D00F7', '#F20089']
-palCol = ['#6877f9', '#ed95c7']
+palCol = ['#6877f915', '#ed95c715']
 palette = sns.set_palette(palCol)
 # #############################################################################
 # PParse data
@@ -32,7 +32,7 @@ ax = fig.add_subplot()
 sns.violinplot(
     y=["Attempts"] * len(ldBrd), x='Time', hue="Version",
     data=ldBrd, palette=palette, split=True, ax=ax,
-    cut=0, orient="h", saturation=.85, inner=None, linewidth=0
+    cut=0, orient="h", saturation=1, inner=None, linewidth=0
 )
 plt.axhline(0, c='k')
 # Digital ---------------------------------------------------------------------
@@ -96,7 +96,7 @@ for i in range(entries):
         bot = not bot
     ax.text(
         timeL[i], yPos, str(i + 1) + ': ' + nameL[i],
-        fontsize=2.5, rotation=90,
+        fontsize=2, rotation=90,
         horizontalalignment='right',
         verticalalignment=yAlign
     )

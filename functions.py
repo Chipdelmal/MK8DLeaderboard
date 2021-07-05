@@ -39,8 +39,9 @@ def getTiming(time):
 
 
 def getRow(driver, tblRowXPth):
-    (place, name, time, _, version, date) = (
-            driver.find_elements_by_xpath(el)[0].text for el in tblRowXPth
+    (place, name, time, _, _, version, date, _) = (
+            driver.find_elements_by_xpath(el)[0].get_attribute('textContent') 
+            for el in tblRowXPth
         )
     return (place, name, time, version, date)
 

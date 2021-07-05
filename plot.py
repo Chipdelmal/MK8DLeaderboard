@@ -8,7 +8,7 @@ plt.rcParams["font.family"]="STSong"
 
 (IN, FILE, OUT) = (
     '/home/chipdelmal/Documents/MK8D/Leaderboard/',
-    '2020-10-17_48_200cc_NoItems.csv',
+    '2021-07-05_48_200cc_NoItems.csv',
     '/home/chipdelmal/Documents/MK8D/Leaderboard/img/'
 )
 # FILE = sys.argv[1]

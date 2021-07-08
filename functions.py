@@ -46,7 +46,12 @@ def getRow(driver, tblRowXPth):
             driver.find_elements_by_xpath(el)[0].get_attribute('textContent') 
             for el in tblRowXPth[5:7]
     )
-    
+    # Fix for leaderboards without "real-time" column
+    if (len(version)==0) or (len(date)==0):
+        (version, date) = (
+                driver.find_elements_by_xpath(el)[0].get_attribute('textContent') 
+                for el in tblRowXPth[4:6]
+        )
     return (place, name, time, version, date)
 
 

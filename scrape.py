@@ -14,7 +14,7 @@ from selenium.webdriver.chrome.options import Options
     '/home/chipdelmal/Documents/GitHub/MK8DLeaderboard/chromedriver/chromedriver',
     '/home/chipdelmal/Documents/MK8D/Leaderboard/'
 )
-(TRK, SPD, ITM) = ('48', '200cc', 'NoItems')
+# (TRK, SPD, ITM) = ('48', '200cc', 'NoItems')
 # Load driver and mainpage ----------------------------------------------------
 print('* Loading selenium scraper...')
 chrome_options = Options()
@@ -74,3 +74,4 @@ print('* Done!')
 # [driver.find_elements_by_xpath(el)[0].text for el in tblRowXPth]
 # tst = driver.find_elements_by_xpath('//*[@id="primary-leaderboard"]/tbody/tr[2]/td[6]')
 # //*[@id="primary-leaderboard"]/tbody/tr[9]/td[6]
+

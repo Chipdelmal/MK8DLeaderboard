@@ -5,7 +5,27 @@ from glob import glob
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.pylab as pl
 from dateutil import parser
+from random import shuffle
+from random import uniform
+
+
+
+def getPlayerRanks(name, boards):
+    (ranks, times) = ([], [])
+    for brd  in boards:
+        row = brd[brd['Player']==name]
+        if row.shape[0] > 0:
+            (rank, time) = (
+                row['Rank'].values[0], 
+                row['Time'].values[0]
+            )
+        else:
+            (rank, time) = (np.nan, np.nan)
+        ranks.append(rank)
+        times.append(time)
+    return (ranks, times)
 
 
 (IN, FILE, OUT) = (
@@ -26,7 +46,7 @@ playersDicts = {}
 name = 'Pianist15'
 for name in names:
     (ranks, times) = getPlayerRanks(name, ldBrds)
-    meanRank = np.nanmean(ranks)
+    meanRank = np.nanmean(ranks)+uniform(0, 0.01)
     playersDicts[meanRank] = {
         'Name': name, 'Ranks': ranks, 'Times':times
     }
@@ -40,49 +60,40 @@ entries = {
 }
 names = entries.keys()
 # Plot ------------------------------------------------------------------------
-subset = (0, 100)
+subset = (0, len(names))
 xCoords = [(i-fdates[0]).days for i in fdates]
 nme = list(names)[0]
-(fig, ax) = plt.subplots(1, 1, figsize=(12, 12))
-for nme in list(names)[subset[0]:subset[1]]:
+colors = pl.cm.plasma(np.linspace(0, 1, subset[1]-subset[0]))
+shuffle(colors)
+(fig, ax) = plt.subplots(1, 1, figsize=(12, 12/2))
+for (ix, nme) in enumerate(list(names)[subset[0]:subset[1]]):
     plt.plot(
-        xCoords, entries[nme],
-        lw=2, alpha=0.5, 
-        marker='.', markersize=0
+        xCoords, entries[nme], # [0 if x is np.nan else x for x in entries[nme]],
+        lw=.75, alpha=.75, color=colors[ix],
+        marker='.', markersize=0,
+        #solid_joinstyle='round',
+        #solid_capstyle='butt'
     )
 ax.vlines(
     xCoords, 0, 1, 
     transform=ax.get_xaxis_transform(),
-    lw=0.1
+    lw=0.1, color='b'
 )
 ax.hlines(
     list(range(subset[0]+1, subset[1], 5)), 0, 1, 
     transform=ax.get_yaxis_transform(),
-    lw=0.1
+    lw=0.1, color='b'
 )
+fig.savefig("./test", dpi=500)
+# ax.set_facecolor('k')
 
 
-
-def getPlayerRanks(name, boards):
-    (ranks, times) = ([], [])
-    for brd  in boards:
-        row = brd[brd['Player']==name]
-        if row.shape[0] > 0:
-            (rank, time) = (
-                row['Rank'].values[0], 
-                row['Time'].values[0]
-            )
-        else:
-            (rank, time) = (np.nan, np.nan)
-        ranks.append(rank)
-        times.append(time)
-    return (ranks, times)
 
 
 ###############################################################################
 # Debug
 ###############################################################################
-i=30
-fnames[i]
-ldBrds[i]
-[ix for (ix, i) in enumerate(times) if i == 109.7]
+# i=30
+# fnames[i]
+# ldBrds[i]
+# [ix for (ix, i) in enumerate(times) if i == 109.7]

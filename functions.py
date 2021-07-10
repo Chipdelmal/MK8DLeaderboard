@@ -1,7 +1,7 @@
 
 import re
 from datetime import timedelta
-
+import numpy as np
 
 regex = re.compile(
         r'((?P<hours>\d+?)h)?((?P<minutes>\d+?)m)?((?P<seconds>\d+?)s)?((?P<milliseconds>\d+?)ms)?'
@@ -59,3 +59,19 @@ def stripRank(rankStr):
     cln = rankStr.replace('th', '').replace('st', '')
     cln = cln.replace('nd', '').replace('rd', '')
     return cln
+
+
+def getPlayerRanks(name, boards):
+    (ranks, times) = ([], [])
+    for brd  in boards:
+        row = brd[brd['Player']==name]
+        if (row.shape[0]>0):
+            (rank, time) = (
+                row['Rank'].values[0], 
+                row['Time'].values[0]
+            )
+        else:
+            (rank, time) = (np.nan, np.nan)
+        ranks.append(rank)
+        times.append(time)
+    return (ranks, times)

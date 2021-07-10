@@ -11,22 +11,7 @@ from random import shuffle
 from random import uniform
 import plotly.express as px
 import plotly.graph_objects as go
-
-
-def getPlayerRanks(name, boards):
-    (ranks, times) = ([], [])
-    for brd  in boards:
-        row = brd[brd['Player']==name]
-        if row.shape[0] > 0:
-            (rank, time) = (
-                row['Rank'].values[0], 
-                row['Time'].values[0]
-            )
-        else:
-            (rank, time) = (np.nan, np.nan)
-        ranks.append(rank)
-        times.append(time)
-    return (ranks, times)
+import functions as fun
 
 
 (IN, FILE, OUT) = (
@@ -36,7 +21,6 @@ def getPlayerRanks(name, boards):
 )
 fnames = sorted(glob(path.join(IN, FILE)))
 fdates = [parser.parse(path.split(i)[-1][:10]) for i in fnames]
-fnames
 ###############################################################################
 # Process
 ###############################################################################
@@ -47,7 +31,7 @@ names = list(set(x for lst in namesLst for x in lst))
 playersDicts = {}
 name = 'Pianist15'
 for name in names:
-    (ranks, times) = getPlayerRanks(name, ldBrds)
+    (ranks, times) = fun.getPlayerRanks(name, ldBrds)
     meanRank = np.nanmean(ranks)+uniform(0, 0.01)
     playersDicts[meanRank] = {
         'Name': name, 'Ranks': ranks, 'Times':times
@@ -62,16 +46,21 @@ entries = {
 }
 names = entries.keys()
 # Plot ------------------------------------------------------------------------
+hlight = set(['chipdelmal'])
 subset = (0, len(names))
 xCoords = [(i-fdates[0]).days for i in fdates]
 nme = list(names)[0]
 colors = pl.cm.plasma(np.linspace(0, 1, subset[1]-subset[0]))
-shuffle(colors)
+# shuffle(colors)
 (fig, ax) = plt.subplots(1, 1, figsize=(12, 12/2))
 for (ix, nme) in enumerate(list(names)[subset[0]:subset[1]]):
+    color = colors[ix]
+    if nme in hlight:
+        print('match')
+        color = 'k'
     plt.plot(
         xCoords, entries[nme], # [0 if x is np.nan else x for x in entries[nme]],
-        lw=.75, alpha=.75, color=colors[ix],
+        lw=.8, alpha=.75, color=color,
         marker='.', markersize=0,
         #solid_joinstyle='round',
         #solid_capstyle='butt'
@@ -88,32 +77,31 @@ ax.hlines(
 )
 ax.set_xlim(0, max(xCoords))
 ax.set_ylim(0, max(ldBrds[-1]['Rank'])+1)
-fig.savefig("./test", dpi=500)
 # ax.set_facecolor('k')
+fig.savefig(path.join(OUT, 'RanksHistory.png'), dpi=500)
 ###############################################################################
 # Interactive
 ###############################################################################
-alpha=.5
-fig = go.Figure()
-for (ix, nme) in enumerate(list(names)[subset[0]:subset[1]]):
-    colors[ix][-1]=alpha
-    fig.add_trace(
-        go.Scatter(
-            x=xCoords, y=entries[nme],
-            mode='lines', name=nme,
-            line = dict(
-                color='rgba'+str(tuple(colors[ix])), 
-                width=2.5
-            )
-        )
-    )
-fig.show()
-fig.write_html("./file.html")
+# alpha=.5
+# fig = go.Figure()
+# for (ix, nme) in enumerate(list(names)[subset[0]:subset[1]]):
+#     colors[ix][-1]=alpha
+#     fig.add_trace(
+#         go.Scatter(
+#             x=xCoords, y=entries[nme],
+#             mode='lines', name=nme,
+#             line = dict(
+#                 color='rgba'+str(tuple(colors[ix])), 
+#                 width=2.5
+#             )
+#         )
+#     )
+# fig.show()
+# fig.write_html(path.join(OUT, 'RanksHistory.html'))
 ###############################################################################
 # Debug
 ###############################################################################
-i=1
-fnames[i]
-list(ldBrds[i]['Rank'])[50:75]
-
-[ix for (ix, i) in enumerate(times) if i == 109.7]
+# i=1
+# fnames[i]
+# list(ldBrds[i]['Rank'])[50:75]
+# [ix for (ix, i) in enumerate(times) if i == 109.7]

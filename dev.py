@@ -9,7 +9,8 @@ import matplotlib.pylab as pl
 from dateutil import parser
 from random import shuffle
 from random import uniform
-
+import plotly.express as px
+import plotly.graph_objects as go
 
 
 def getPlayerRanks(name, boards):
@@ -35,6 +36,7 @@ def getPlayerRanks(name, boards):
 )
 fnames = sorted(glob(path.join(IN, FILE)))
 fdates = [parser.parse(path.split(i)[-1][:10]) for i in fnames]
+fnames
 ###############################################################################
 # Process
 ###############################################################################
@@ -84,16 +86,34 @@ ax.hlines(
     transform=ax.get_yaxis_transform(),
     lw=0.1, color='b'
 )
+ax.set_xlim(0, max(xCoords))
+ax.set_ylim(0, max(ldBrds[-1]['Rank'])+1)
 fig.savefig("./test", dpi=500)
 # ax.set_facecolor('k')
-
-
-
-
+###############################################################################
+# Interactive
+###############################################################################
+alpha=.5
+fig = go.Figure()
+for (ix, nme) in enumerate(list(names)[subset[0]:subset[1]]):
+    colors[ix][-1]=alpha
+    fig.add_trace(
+        go.Scatter(
+            x=xCoords, y=entries[nme],
+            mode='lines', name=nme,
+            line = dict(
+                color='rgba'+str(tuple(colors[ix])), 
+                width=2.5
+            )
+        )
+    )
+fig.show()
+fig.write_html("./file.html")
 ###############################################################################
 # Debug
 ###############################################################################
-# i=30
-# fnames[i]
-# ldBrds[i]
-# [ix for (ix, i) in enumerate(times) if i == 109.7]
+i=1
+fnames[i]
+list(ldBrds[i]['Rank'])[50:75]
+
+[ix for (ix, i) in enumerate(times) if i == 109.7]

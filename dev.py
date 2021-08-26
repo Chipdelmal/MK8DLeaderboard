@@ -2,6 +2,7 @@
 from collections import OrderedDict
 from os import path
 from glob import glob
+from numpy.lib.arraypad import pad
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -12,6 +13,7 @@ from random import uniform
 import plotly.express as px
 import plotly.graph_objects as go
 import functions as fun
+from datetime import datetime, timedelta
 
 
 (IN, FILE, OUT) = (
@@ -56,28 +58,35 @@ colors = pl.cm.plasma(np.linspace(0, 1, subset[1]-subset[0]))
 for (ix, nme) in enumerate(list(names)[subset[0]:subset[1]]):
     color = colors[ix]
     if nme in hlight:
-        print('match')
         color = 'k'
     plt.plot(
         xCoords, entries[nme], # [0 if x is np.nan else x for x in entries[nme]],
         lw=.8, alpha=.75, color=color,
         marker='.', markersize=0,
-        #solid_joinstyle='round',
-        #solid_capstyle='butt'
+        solid_joinstyle='round',
+        solid_capstyle='butt'
     )
 ax.vlines(
     xCoords, 0, 1, 
     transform=ax.get_xaxis_transform(),
-    lw=0.1, color='b'
+    lw=0.25, color=(0, 0, 1, .5)
 )
 ax.hlines(
-    list(range(subset[0]+1, subset[1], 5)), 0, 1, 
+    list(range(subset[0], subset[1], 10)), 0, 1, 
     transform=ax.get_yaxis_transform(),
-    lw=0.1, color='b'
+    lw=0.25, color=(0, 0, 1, .5)
 )
 ax.set_xlim(0, max(xCoords))
 ax.set_ylim(0, max(ldBrds[-1]['Rank'])+1)
-# ax.set_facecolor('k')
+# ax.set_xticks(xCoords)
+# ax.set_xticklabels([x.strftime('%Y-%m-%d') for x in fdates])
+ax.set_xticks(range(0, xCoords[-1], 15))
+ax.set_xticklabels([(fdates[0]+timedelta(x)).strftime('%Y-%m-%d') for x in range(0, xCoords[-1], 15)])
+plt.xticks(rotation=90)
+# plt.xlabel('Date')
+# plt.xlabel('Date (Y-M-D)', size=30)
+plt.ylabel('Rank', size=30)
+ax.set_facecolor('w')
 fig.savefig(path.join(OUT, 'RanksHistory.png'), dpi=500)
 ###############################################################################
 # Interactive

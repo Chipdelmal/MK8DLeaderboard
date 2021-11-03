@@ -11,9 +11,11 @@ from dateutil import parser
 from random import shuffle
 from random import uniform
 import plotly.express as px
+import matplotlib.pylab as ply
 import plotly.graph_objects as go
 import functions as fun
 from datetime import datetime, timedelta
+
 
 
 (IN, FILE, OUT) = (
@@ -52,8 +54,15 @@ hlight = set(['chipdelmal'])
 subset = (0, len(names))
 xCoords = [(i-fdates[0]).days for i in fdates]
 nme = list(names)[0]
-colors = pl.cm.plasma(np.linspace(0, 1, subset[1]-subset[0]))
-# shuffle(colors)
+rvb = fun.colorPaletteFromHexList([
+    '#ff0054', '#ff5c8a', '#8338ec', '#70d6ff', '#03045e'
+])
+colors = rvb(np.linspace(0, 1, num=20))
+# colors = ply.cm.Pastel1(np.linspace(0, 1, num=20))
+# colors = list(colors)*len(names)
+# colors = pl.cm.seismic(np.linspace(0, 1, num=20))# subset[1]-subset[0]))
+colors = list(colors)*len(names)
+shuffle(colors)
 (fig, ax) = plt.subplots(1, 1, figsize=(12, 12/2))
 for (ix, nme) in enumerate(list(names)[subset[0]:subset[1]]):
     color = colors[ix]
@@ -61,7 +70,7 @@ for (ix, nme) in enumerate(list(names)[subset[0]:subset[1]]):
         color = 'k'
     plt.plot(
         xCoords, entries[nme], # [0 if x is np.nan else x for x in entries[nme]],
-        lw=.8, alpha=.75, color=color,
+        lw=.45, alpha=.75, color=color,
         marker='.', markersize=0,
         solid_joinstyle='round',
         solid_capstyle='butt'
@@ -78,6 +87,7 @@ ax.hlines(
 )
 ax.set_xlim(0, max(xCoords))
 ax.set_ylim(0, max(ldBrds[-1]['Rank'])+1)
+ax.set_aspect((1/4)/ax.get_data_ratio())
 # ax.set_xticks(xCoords)
 # ax.set_xticklabels([x.strftime('%Y-%m-%d') for x in fdates])
 ax.set_xticks(range(0, xCoords[-1], 15))
@@ -87,26 +97,26 @@ plt.xticks(rotation=90)
 # plt.xlabel('Date (Y-M-D)', size=30)
 plt.ylabel('Rank', size=30)
 ax.set_facecolor('w')
-fig.savefig(path.join(OUT, 'RanksHistory.png'), dpi=500)
+fig.savefig(path.join(OUT, 'RanksHistory.png'), dpi=750)
 ###############################################################################
 # Interactive
 ###############################################################################
-# alpha=.5
-# fig = go.Figure()
-# for (ix, nme) in enumerate(list(names)[subset[0]:subset[1]]):
-#     colors[ix][-1]=alpha
-#     fig.add_trace(
-#         go.Scatter(
-#             x=xCoords, y=entries[nme],
-#             mode='lines', name=nme,
-#             line = dict(
-#                 color='rgba'+str(tuple(colors[ix])), 
-#                 width=2.5
-#             )
-#         )
-#     )
-# fig.show()
-# fig.write_html(path.join(OUT, 'RanksHistory.html'))
+alpha=.5
+fig = go.Figure()
+for (ix, nme) in enumerate(list(names)[subset[0]:subset[1]]):
+    colors[ix][-1]=alpha
+    fig.add_trace(
+        go.Scatter(
+            x=xCoords, y=entries[nme],
+            mode='lines', name=nme,
+            line = dict(
+                color='rgba'+str(tuple(colors[ix])), 
+                width=2.5
+            )
+        )
+    )
+fig.show()
+fig.write_html(path.join(OUT, 'RanksHistory.html'))
 ###############################################################################
 # Debug
 ###############################################################################

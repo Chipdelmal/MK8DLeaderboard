@@ -2,6 +2,9 @@
 import re
 from datetime import timedelta
 import numpy as np
+import matplotlib.colors as mcolors
+from matplotlib.colors import LinearSegmentedColormap
+
 
 regex = re.compile(
         r'((?P<hours>\d+?)h)?((?P<minutes>\d+?)m)?((?P<seconds>\d+?)s)?((?P<milliseconds>\d+?)ms)?'
@@ -75,3 +78,10 @@ def getPlayerRanks(name, boards):
         ranks.append(rank)
         times.append(time)
     return (ranks, times)
+
+
+def colorPaletteFromHexList(clist):
+    c = mcolors.ColorConverter().to_rgb
+    clrs = [c(i) for i in clist]
+    rvb = mcolors.LinearSegmentedColormap.from_list("", clrs)
+    return rvb

@@ -3,7 +3,7 @@ import os
 from subprocess import Popen, PIPE
 
 
-fldr = '/home/chipdelmal/MEGAsync/MK8DLead/'
+fldr = '/home/chipdelmal/Documents/MK8D/Leaderboard'
 flst = [each for each in os.listdir(fldr) if each.endswith('.csv')]
 # #############################################################################
 # Parse the leaderboards to CSV files

@@ -11,7 +11,7 @@ plt.rcParams["font.family"]="STSong"
     '2021-07-07_48_200cc_NoItems.csv',
     '/home/chipdelmal/Documents/MK8D/Leaderboard/img/'
 )
-# FILE = sys.argv[1]
+FILE = sys.argv[1]
 # Read dataframe --------------------------------------------------------------
 ldBrd = pd.read_csv(IN + FILE)
 colors = ['#e63946', '#1d3557']

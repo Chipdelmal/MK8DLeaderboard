@@ -39,7 +39,7 @@ a = ActionChains(driver)
 # Iterate through entries
 i = 4
 entriesList = []
-for i in range(entriesNum):
+for i in range(0, entriesNum):
     entry = df.iloc[i]['Link']
     # Get page
     driver.get(entry)
@@ -49,10 +49,10 @@ for i in range(entriesNum):
         driver.find_element_by_xpath(dateX).text
     )
     # Get submission time
-    head = driver.find_element_by_xpath(t).text
+    head = driver.find_element_by_xpath(runtX).text
     headSplit = head.split('-')
     if len(headSplit) > 3:
-        (cat, time, _, _ ) = headSplit
+        (cat, time) = (headSplit[0], headSplit[1])
         (runtT, authT) = [i.strip() for i in time.split('in')[1].split('by')]
         authT = authT.replace(" (Obsolete)\nIn", "")
     elif len(headSplit) == 3:
@@ -73,4 +73,4 @@ for i in range(entriesNum):
 runsDF = pd.DataFrame(
     entriesList, columns=['Runner', 'Time', 'Date', 'Submitted in']
 )
-runsDF.to_csv(path.join(OUT, 'leadRunsHistory.csv'))
+runsDF.to_csv(path.join(OUT, 'leadRunsHistory.csv'), index=False)

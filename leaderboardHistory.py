@@ -17,10 +17,10 @@ BASE_URL = 'https://www.speedrun.com'
     '/home/chipdelmal/Documents/MK8D/Leaderboard/'
 )
 (TRK, SPD, ITM) = ('48', '200cc', 'NoItems')
+print('* Parsing links list...')
 ###############################################################################
 # Load driver and mainpage
 ###############################################################################
-print('* Loading selenium scraper...')
 chrome_options = Options()
 # chrome_options.add_argument("--headless")
 driver = webdriver.Chrome(DRV, options=chrome_options)
@@ -56,15 +56,16 @@ shwnBtn.click()
 # Get table rows (links to runs)
 ###############################################################################
 xPath = '//*[@id="primary-leaderboard"]/tbody/tr[{}]'
-rows = 604 # len(driver.find_elements_by_tag_name('tr'))
+rows = 450 # len(driver.find_elements_by_tag_name('tr'))
 runLinks = []
 for row in range(1, rows):
     r = xPath.format(row)
     rObj = driver.find_element_by_xpath(r)
     runLink = rObj.get_attribute('data-target')
     runLinks.append(BASE_URL+runLink)
+driver.quit()
 ###############################################################################
 # Export list to file
 ###############################################################################
-runLinksDF = pd.DataFrame(runLinks, columns=['Link'])
+runLinksDF = pd.DataFrame(runLinks)
 runLinksDF.to_csv(path.join(OUT, 'leadHistory.csv'), index=False, header=False)

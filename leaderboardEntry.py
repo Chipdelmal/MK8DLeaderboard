@@ -37,7 +37,7 @@ a = ActionChains(driver)
     '//*[@id="centerwidget"]/div[2]/div[1]'
 )
 # Iterate through entries
-i = 4
+i = 30
 entriesList = []
 for i in range(0, entriesNum):
     entry = df.iloc[i]['Link']
@@ -51,26 +51,27 @@ for i in range(0, entriesNum):
     # Get submission time
     head = driver.find_element_by_xpath(runtX).text
     headSplit = head.split('-')
+    (cat, time) = (headSplit[0], headSplit[1])
     if len(headSplit) > 3:
-        (cat, time) = (headSplit[0], headSplit[1])
-        (runtT, authT) = [i.strip() for i in time.split('in')[1].split('by')]
+        pString = [i.strip() for i in time.split('in')[1].split('by')]
+        (runtT, authT) = (pString[0], pString[1])
         authT = authT.replace(" (Obsolete)\nIn", "")
     elif len(headSplit) == 3:
-        (cat, time, _) = headSplit
-        (runtT, authT) = [i.strip() for i in time.split('in')[1].split('by')]
+        pString = [i.strip() for i in time.split('in')[1].split('by')]
+        (runtT, authT) = (pString[0], pString[1])
         authT = authT.replace(" (Obsolete)\nIn", "")
     else:
-        (cat, time) = headSplit
-        (runtT, authT) = [i.strip() for i in time.split('\n')[0].split('in')[1].split('by')]
+        pString = [i.strip() for i in time.split('\n')[0].split('in')[1].split('by')]
+        (runtT, authT) = (pString[0], pString[1])
         authT = authT.replace(" (Obsolete)", "")
+    authT = authT.split('(Obsolete)')[0].strip()
     # Assemble result
     row = (authT, runtT, dateT, submT)
     entriesList.append(row)
-    print(row)
+    print('{}:{}'.format(str(i+1).zfill(3), row))
 ###############################################################################
 # Create and export dataframes
 ###############################################################################
-runsDF = pd.DataFrame(
-    entriesList, columns=['Runner', 'Time', 'Date', 'Submitted in']
-)
+cols = ['Runner', 'Time', 'Date', 'Submitted']
+runsDF = pd.DataFrame(entriesList, columns=cols)
 runsDF.to_csv(path.join(OUT, 'leadRunsHistory.csv'), index=False)

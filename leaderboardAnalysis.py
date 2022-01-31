@@ -23,4 +23,7 @@ df['Time'] = pd.to_timedelta(df['Time'])
 ###############################################################################
 # Processing data
 ###############################################################################
-df['Date'].unique()
+len(df['Date'].unique())
+df['Runner'].unique()
+
+df[df['Runner']=='chipdelmal']

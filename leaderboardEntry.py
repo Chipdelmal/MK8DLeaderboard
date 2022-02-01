@@ -66,7 +66,7 @@ for i in range(0, entriesNum):
         authT = authT.replace(" (Obsolete)", "")
     authT = authT.split('(Obsolete)')[0].strip()
     # Assemble result
-    row = (authT, runtT, dateT, submT)
+    row = (str(authT), runtT, dateT, submT)
     entriesList.append(row)
     print('{}:{}'.format(str(i+1).zfill(3), row))
 ###############################################################################

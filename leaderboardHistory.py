@@ -8,6 +8,7 @@ from os import path
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.common.exceptions import NoSuchElementException
 
 
 # (TRK, SPD, ITM) = (sys.argv[1], sys.argv[2], sys.argv[3])
@@ -17,19 +18,17 @@ BASE_URL = 'https://www.speedrun.com'
     '/home/chipdelmal/Documents/MK8D/Leaderboard/'
 )
 (TRK, SPD, ITM) = ('48', '200cc', 'NoItems')
-print('* Parsing links list...')
 ###############################################################################
 # Load driver and mainpage
 ###############################################################################
 chrome_options = Options()
-# chrome_options.add_argument("--headless")
+chrome_options.add_argument("--headless")
 driver = webdriver.Chrome(DRV, options=chrome_options)
 driver.get(const.mainpage)
 a = ActionChains(driver)
 ###############################################################################
 # Setup dictionaries for buttons
 ###############################################################################
-print('* Selecting leaderboard...')
 catDict = const.catSelector(TRK)
 (trkBtn, spdBtn, itmBtn) = (
     driver.find_elements_by_xpath(catDict.get('trk'))[0],
@@ -56,13 +55,16 @@ shwnBtn.click()
 # Get table rows (links to runs)
 ###############################################################################
 xPath = '//*[@id="primary-leaderboard"]/tbody/tr[{}]'
-rows = 450 # len(driver.find_elements_by_tag_name('tr'))
+rows = 1500 # len(driver.find_elements_by_tag_name('tr'))
 runLinks = []
 for row in range(1, rows):
-    r = xPath.format(row)
-    rObj = driver.find_element_by_xpath(r)
-    runLink = rObj.get_attribute('data-target')
-    runLinks.append(BASE_URL+runLink)
+    try:
+        r = xPath.format(row)
+        rObj = driver.find_element_by_xpath(r)
+        runLink = rObj.get_attribute('data-target')
+        runLinks.append(BASE_URL+runLink)
+    except NoSuchElementException:
+        break
 driver.quit()
 ###############################################################################
 # Export list to file

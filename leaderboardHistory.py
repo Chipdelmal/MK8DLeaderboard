@@ -23,7 +23,7 @@ MAX_ROWS = 1500
 # Load driver and mainpage
 ###############################################################################
 chrome_options = Options()
-chrome_options.add_argument("--headless")
+# chrome_options.add_argument("--headless")
 driver = webdriver.Chrome(DRV, options=chrome_options)
 driver.get(const.mainpage)
 a = ActionChains(driver)

@@ -18,6 +18,7 @@ BASE_URL = 'https://www.speedrun.com'
     '/home/chipdelmal/Documents/MK8D/Leaderboard/'
 )
 (TRK, SPD, ITM) = ('48', '200cc', 'NoItems')
+MAX_ROWS = 1500
 ###############################################################################
 # Load driver and mainpage
 ###############################################################################
@@ -55,9 +56,8 @@ shwnBtn.click()
 # Get table rows (links to runs)
 ###############################################################################
 xPath = '//*[@id="primary-leaderboard"]/tbody/tr[{}]'
-rows = 1500 # len(driver.find_elements_by_tag_name('tr'))
 runLinks = []
-for row in range(1, rows):
+for row in range(1, MAX_ROWS):
     try:
         r = xPath.format(row)
         rObj = driver.find_element_by_xpath(r)

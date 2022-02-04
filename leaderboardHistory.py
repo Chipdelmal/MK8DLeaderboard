@@ -37,7 +37,7 @@ catDict = const.catSelector(TRK)
     driver.find_elements_by_xpath(catDict.get('itm').get(ITM))[0]
 )
 trkBtn.click(); itmBtn.click(); spdBtn.click()
-time.sleep(3)
+time.sleep(5)
 ###############################################################################
 # Open obsolete runs
 ###############################################################################
@@ -52,6 +52,7 @@ a.move_to_element(obsBtn).perform()
 shwn = '//*[@id="leaderboard-menu"]/div/div[2]/div[1]/ul/li[4]/ul/a[2]'
 shwnBtn = driver.find_elements_by_xpath(shwn)[0]
 shwnBtn.click()
+time.sleep(15)
 ###############################################################################
 # Get table rows (links to runs)
 ###############################################################################

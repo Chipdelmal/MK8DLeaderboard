@@ -1,6 +1,5 @@
 
 import sys
-import csv
 import time
 import pandas as pd
 import constants as const
@@ -11,7 +10,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 
 
 # (TRK, SPD, ITM) = (sys.argv[1], sys.argv[2], sys.argv[3])
-(TRK, SPD, ITM) = ('32', '200cc', 'NoItems')
+(TRK, SPD, ITM) = ('Bonus', '200cc', 'NoItems')
 BASE_URL = 'https://www.speedrun.com'
 (DRV, OUT) = (
     '/home/chipdelmal/Documents/GitHub/MK8DLeaderboard/chromedriver/chromedriver',
@@ -27,7 +26,7 @@ entriesNum = df.shape[0]
 # Load driver and mainpage
 ###############################################################################
 chrome_options = Options()
-# chrome_options.add_argument("--headless")
+chrome_options.add_argument("--headless")
 driver = webdriver.Chrome(DRV, options=chrome_options)
 driver.get(const.mainpage)
 a = ActionChains(driver)
@@ -71,7 +70,7 @@ for i in range(0, entriesNum):
     # Assemble result
     row = (str(authT), runtT, dateT, submT)
     entriesList.append(row)
-    print('\t{}:{}'.format(str(i+1).zfill(3), row))
+    print('\t{}: {}'.format(str(i+1).zfill(3), row))
 ###############################################################################
 # Create and export dataframes
 ###############################################################################

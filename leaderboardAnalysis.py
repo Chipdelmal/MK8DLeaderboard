@@ -2,7 +2,7 @@
 from os import path
 import pandas as pd
 
-(TRK, SPD, ITM) = ('48', '200cc', 'NoItems')
+(TRK, SPD, ITM) = ('Nitro', '200cc', 'NoItems')
 OUT = '/home/chipdelmal/Documents/MK8D/Leaderboard/'
 ###############################################################################
 # Read file

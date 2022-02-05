@@ -1,6 +1,5 @@
 
 import sys
-import csv
 import time
 import pandas as pd
 import constants as const

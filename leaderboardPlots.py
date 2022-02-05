@@ -10,12 +10,15 @@ import matplotlib.dates as mdates
 import matplotlib.pylab as ply
 
 
-FNAME = 'leadRunsRanks.csv'
+(TRK, SPD, ITM) = ('48', '200cc', 'NoItems')
 OUT = '/home/chipdelmal/Documents/MK8D/Leaderboard/'
 ###############################################################################
 # Read file
 ###############################################################################
-dfRnk = pd.read_csv(path.join(OUT, FNAME), index_col=0)
+dfRnk = pd.read_csv(
+    path.join(OUT, 'LeadRanks-{}_{}-{}.csv'.format(TRK, SPD, ITM)), 
+    index_col=0
+)
 (namesNum, datesNum) = dfRnk.shape
 ###############################################################################
 # Plots Ranks
@@ -72,8 +75,8 @@ ax.set_ylim(0, namesNum)
 ax.set_aspect(aspect/ax.get_data_ratio())
 # Export ----------------------------------------------------------------------
 fig.savefig(
-    path.join(OUT, 'leadRanks.png'), dpi=750, bbox_inches="tight",
-    facecolor='w'
+    path.join(OUT, 'LeadRanks-{}_{}-{}.png'.format(TRK, SPD, ITM)), 
+    dpi=750, bbox_inches="tight", facecolor='w'
 )
 ###############################################################################
 # Plots Scaled

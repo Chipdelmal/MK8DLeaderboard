@@ -11,14 +11,17 @@ from selenium.webdriver.common.action_chains import ActionChains
 
 
 # (TRK, SPD, ITM) = (sys.argv[1], sys.argv[2], sys.argv[3])
+(TRK, SPD, ITM) = ('32', '200cc', 'NoItems')
 BASE_URL = 'https://www.speedrun.com'
 (DRV, OUT) = (
     '/home/chipdelmal/Documents/GitHub/MK8DLeaderboard/chromedriver/chromedriver',
     '/home/chipdelmal/Documents/MK8D/Leaderboard/'
 )
-(TRK, SPD, ITM) = ('48', '200cc', 'NoItems')
 print('* Parsing entries...')
-df = pd.read_csv(path.join(OUT, 'leadHistory.csv'), names=['Link'])
+df = pd.read_csv(
+    path.join(OUT, 'LeadHistory-{}_{}-{}.csv'.format(TRK, SPD, ITM)), 
+    names=['Link']
+)
 entriesNum = df.shape[0]
 ###############################################################################
 # Load driver and mainpage
@@ -68,10 +71,13 @@ for i in range(0, entriesNum):
     # Assemble result
     row = (str(authT), runtT, dateT, submT)
     entriesList.append(row)
-    print('{}:{}'.format(str(i+1).zfill(3), row))
+    print('\t{}:{}'.format(str(i+1).zfill(3), row))
 ###############################################################################
 # Create and export dataframes
 ###############################################################################
 cols = ['Runner', 'Time', 'Date', 'Submitted']
 runsDF = pd.DataFrame(entriesList, columns=cols)
-runsDF.to_csv(path.join(OUT, 'leadRunsHistory.csv'), index=False)
+runsDF.to_csv(
+    path.join(OUT, 'LeadEntries-{}_{}-{}.csv'.format(TRK, SPD, ITM)), 
+    index=False
+)

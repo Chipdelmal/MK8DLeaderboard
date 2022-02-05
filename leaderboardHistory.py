@@ -12,12 +12,12 @@ from selenium.common.exceptions import NoSuchElementException
 
 
 # (TRK, SPD, ITM) = (sys.argv[1], sys.argv[2], sys.argv[3])
-BASE_URL = 'https://www.speedrun.com'
+(TRK, SPD, ITM) = ('32', '200cc', 'NoItems')
 (DRV, OUT) = (
     '/home/chipdelmal/Documents/GitHub/MK8DLeaderboard/chromedriver/chromedriver',
     '/home/chipdelmal/Documents/MK8D/Leaderboard/'
 )
-(TRK, SPD, ITM) = ('48', '200cc', 'NoItems')
+BASE_URL = 'https://www.speedrun.com'
 MAX_ROWS = 1500
 ###############################################################################
 # Load driver and mainpage
@@ -30,6 +30,10 @@ a = ActionChains(driver)
 ###############################################################################
 # Setup dictionaries for buttons
 ###############################################################################
+if TRK == '32':
+    nxtBtn = '//*[@id="pending-caret-forward"]/div'
+    fltrBtn = driver.find_element_by_xpath(nxtBtn)
+    fltrBtn.click()
 catDict = const.catSelector(TRK)
 (trkBtn, spdBtn, itmBtn) = (
     driver.find_elements_by_xpath(catDict.get('trk'))[0],
@@ -71,4 +75,7 @@ driver.quit()
 # Export list to file
 ###############################################################################
 runLinksDF = pd.DataFrame(runLinks)
-runLinksDF.to_csv(path.join(OUT, 'leadHistory.csv'), index=False, header=False)
+runLinksDF.to_csv(
+    path.join(OUT, 'LeadHistory-{}_{}-{}.csv'.format(TRK, SPD, ITM)), 
+    index=False, header=False
+)

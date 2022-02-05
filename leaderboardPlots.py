@@ -10,7 +10,7 @@ import matplotlib.dates as mdates
 import matplotlib.pylab as ply
 
 
-(TRK, SPD, ITM) = ('Nitro', '200cc', 'NoItems')
+(TRK, SPD, ITM) = ('Bonus', '200cc', 'NoItems')
 OUT = '/home/chipdelmal/Documents/MK8D/Leaderboard/'
 highName = 'chipdelmal'
 ###############################################################################
@@ -64,12 +64,12 @@ ax.text(
 ax.hlines(
     [10, 25, 50, 100, 150, 200, 250], 
     xmin=dates[0], xmax=dates[-1],
-    lw=.3, alpha=.5, ls='--', color='k', zorder=5
+    lw=.35, alpha=.5, ls='--', color='k', zorder=5
 )
 vLines = [date(i, 1, 1) for i in range(dates[0].year, dates[-1].year+1)]
 ax.vlines(
     vLines, ymin=0, ymax=namesNum,
-    lw=.3, alpha=.5, ls='--', color='k', zorder=5
+    lw=.35, alpha=.5, ls='--', color='k', zorder=5
 )
 for dPos in vLines[1:]:
     ax.text(

@@ -10,7 +10,7 @@ import matplotlib.dates as mdates
 import matplotlib.pylab as ply
 
 
-(TRK, SPD, ITM) = ('Bonus', '200cc', 'NoItems')
+(TRK, SPD, ITM) = ('32', '200cc', 'NoItems')
 OUT = '/home/chipdelmal/Documents/MK8D/Leaderboard/'
 highName = 'chipdelmal'
 ###############################################################################
@@ -32,6 +32,7 @@ dates = [datetime.strptime(i, '%Y-%m-%d') for i in list(dfRnk.columns)]
 (aspect, colors, offset) = (.3, ply.cm.BuPu(np.linspace(0, 1, namesNum)), -2.5)
 font = {'color':  '#00000022', 'weight': 'normal', 'size': 45,}
 shuffle(colors)
+buffer = namesNum*.02
 # Ranks Plot ------------------------------------------------------------------
 (fig, ax) = plt.subplots(1, 1, figsize=(15, 3.5))
 for i in range(namesNum):
@@ -64,18 +65,26 @@ ax.text(
 ax.hlines(
     [10, 25, 50, 100, 150, 200, 250], 
     xmin=dates[0], xmax=dates[-1],
-    lw=.35, alpha=.5, ls='--', color='k', zorder=5
+    lw=.35, alpha=.35, ls='--', color='k', zorder=5
 )
 vLines = [date(i, 1, 1) for i in range(dates[0].year, dates[-1].year+1)]
 ax.vlines(
     vLines, ymin=0, ymax=namesNum,
-    lw=.35, alpha=.5, ls='--', color='k', zorder=5
+    lw=.35, alpha=.35, ls='--', color='k', zorder=5
+)
+ax.hlines(
+    [0, ], xmin=dates[0], xmax=dates[-1],
+    lw=.75, alpha=1, color='#000000', zorder=-5
+)
+ax.vlines(
+    dates, ymin=0-buffer, ymax=0,
+    lw=.2, alpha=.75, color='#000000', zorder=-5
 )
 for dPos in vLines[1:]:
     ax.text(
         dPos, namesNum/2, dPos.year, rotation=90,
         horizontalalignment='right', verticalalignment='center',
-        fontdict=font, zorder=-5
+        fontdict=font, zorder=-10
     )
 # Axes ------------------------------------------------------------------------
 ax.set_title("Mario Kart 8 Deluxe's Leaderboard History", fontsize=30)
@@ -86,7 +95,7 @@ ax.xaxis.set_minor_formatter(mdates.DateFormatter('%b'))
 ax.xaxis.set_major_formatter(mdates.DateFormatter('%b'))
 ax.tick_params(axis="x", which="both", rotation=0)
 ax.margins(x=0); ax.margins(y=0)
-ax.set_xlim(dates[0], dates[-1]); ax.set_ylim(0, namesNum)
+ax.set_xlim(dates[0], dates[-1]); ax.set_ylim(0-buffer, namesNum)
 ax.set_aspect(aspect/ax.get_data_ratio())
 # Export ----------------------------------------------------------------------
 fig.savefig(

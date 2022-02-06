@@ -5,9 +5,10 @@ import pandas as pd
 from datetime import date
 from random import shuffle
 from datetime import datetime
+import matplotlib.pylab as ply
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
-import matplotlib.pylab as ply
+import matplotlib.patches as patches
 
 
 (TRK, SPD, ITM) = ('32', '200cc', 'NoItems')
@@ -32,7 +33,8 @@ dates = [datetime.strptime(i, '%Y-%m-%d') for i in list(dfRnk.columns)]
 (aspect, colors, offset) = (.3, ply.cm.BuPu(np.linspace(0, 1, namesNum)), -2.5)
 font = {'color':  '#00000022', 'weight': 'normal', 'size': 45,}
 shuffle(colors)
-buffer = namesNum*.02
+buffFract = 0.02
+buffer = namesNum*buffFract
 # Ranks Plot ------------------------------------------------------------------
 (fig, ax) = plt.subplots(1, 1, figsize=(15, 3.5))
 for i in range(namesNum):
@@ -68,17 +70,21 @@ ax.hlines(
     lw=.35, alpha=.35, ls='--', color='k', zorder=5
 )
 vLines = [date(i, 1, 1) for i in range(dates[0].year, dates[-1].year+1)]
+ax.axvspan(
+    xmin=dates[0], xmax=dates[-1], ymin=0, ymax=buffFract-.001,
+    lw=.75, alpha=.25, color='#023e8a', zorder=0
+)
 ax.vlines(
     vLines, ymin=0, ymax=namesNum,
     lw=.35, alpha=.35, ls='--', color='k', zorder=5
 )
 ax.hlines(
     [0, ], xmin=dates[0], xmax=dates[-1],
-    lw=.75, alpha=1, color='#000000', zorder=-5
+    lw=.75, alpha=1, color='#000000', zorder=3
 )
 ax.vlines(
     dates, ymin=0-buffer, ymax=0,
-    lw=.2, alpha=.75, color='#000000', zorder=-5
+    lw=.3, alpha=.9, color='#ffffff', zorder=2
 )
 for dPos in vLines[1:]:
     ax.text(

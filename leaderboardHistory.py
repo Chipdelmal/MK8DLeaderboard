@@ -9,7 +9,6 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common.exceptions import NoSuchElementException
 
-
 (TRK, SPD, ITM) = (sys.argv[1], sys.argv[2], sys.argv[3])
 # (TRK, SPD, ITM) = ('32', '200cc', 'NoItems')
 (DRV, OUT) = (
@@ -22,7 +21,7 @@ MAX_ROWS = 1500
 # Load driver and mainpage
 ###############################################################################
 chrome_options = Options()
-chrome_options.add_argument("--headless")
+# chrome_options.add_argument("--headless")
 driver = webdriver.Chrome(DRV, options=chrome_options)
 driver.get(const.mainpage)
 a = ActionChains(driver)

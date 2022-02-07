@@ -1,8 +1,10 @@
 
+import sys
 from os import path
 import pandas as pd
 
-(TRK, SPD, ITM) = ('Bonus', '200cc', 'NoItems')
+(TRK, SPD, ITM) = (sys.argv[1], sys.argv[2], sys.argv[3])
+# (TRK, SPD, ITM) = ('Retro', '200cc', 'NoItems')
 OUT = '/home/chipdelmal/Documents/MK8D/Leaderboard/'
 ###############################################################################
 # Read file

@@ -1,8 +1,12 @@
 #!/bin/bash
 
-echo "* Parsing runs links..."
-python leaderboardHistory.py '48' '200cc' 'NoItems'
-echo "* Parsing runs info..."
-python leaderboardEntry.py '48' '200cc' 'NoItems'
-echo "* Plotting runs..."
-python leaderboardPlots.py '48' '200cc' 'NoItems'
+declare -a cats=("48" "32" "Retro" "Bonus" "Nitro")
+for catg in ${cats[@]}; do
+    printf "* [Processing MK8D $catg]\n"
+    printf "\t Parsing runs links...\n"
+    python leaderboardHistory.py $catg '200cc' 'NoItems'
+    printf "\t Parsing runs entries...\n"
+    python leaderboardEntry.py $catg '200cc' 'NoItems'
+    printf "\t Plotting runs...\n"
+    python leaderboardPlots.py $catg '200cc' 'NoItems'
+done

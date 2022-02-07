@@ -1,4 +1,5 @@
 
+import sys
 import numpy as np
 from os import path
 import pandas as pd
@@ -10,8 +11,8 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import matplotlib.patches as patches
 
-
-(TRK, SPD, ITM) = ('32', '200cc', 'NoItems')
+(TRK, SPD, ITM) = (sys.argv[1], sys.argv[2], sys.argv[3])
+# (TRK, SPD, ITM) = ('48', '200cc', 'NoItems')
 OUT = '/home/chipdelmal/Documents/MK8D/Leaderboard/'
 highName = 'chipdelmal'
 ###############################################################################
@@ -51,11 +52,6 @@ for i in range(namesNum):
         solid_capstyle='round', zorder=zorder
     )
 # Highlight the best rank -----------------------------------------------------
-# ax.hlines(
-#     highBest, xmin=dates[0], xmax=dates[-1],
-#     alpha=.5, color='k', zorder=5, lw=.25, #ls=':'
-# )
-# plt.plot([highDate, highDate], [highBest, highBest+offset], lw=.1)
 ax.text(
     highDate, highBest+offset, 
     'Rank: {}\n{}/{:02d}/{:02d}'.format(
@@ -72,7 +68,7 @@ ax.hlines(
 vLines = [date(i, 1, 1) for i in range(dates[0].year, dates[-1].year+1)]
 ax.axvspan(
     xmin=dates[0], xmax=dates[-1], ymin=0, ymax=buffFract-.001,
-    lw=.75, alpha=.25, color='#023e8a', zorder=0
+    lw=.75, alpha=.5, color='#adb5bd', zorder=0
 )
 ax.vlines(
     vLines, ymin=0, ymax=namesNum,

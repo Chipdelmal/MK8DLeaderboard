@@ -9,14 +9,13 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.action_chains import ActionChains
 
 
-# (TRK, SPD, ITM) = (sys.argv[1], sys.argv[2], sys.argv[3])
-(TRK, SPD, ITM) = ('Bonus', '200cc', 'NoItems')
+(TRK, SPD, ITM) = (sys.argv[1], sys.argv[2], sys.argv[3])
+# (TRK, SPD, ITM) = ('Bonus', '200cc', 'NoItems')
 BASE_URL = 'https://www.speedrun.com'
 (DRV, OUT) = (
     '/home/chipdelmal/Documents/GitHub/MK8DLeaderboard/chromedriver/chromedriver',
     '/home/chipdelmal/Documents/MK8D/Leaderboard/'
 )
-print('* Parsing entries...')
 df = pd.read_csv(
     path.join(OUT, 'LeadHistory-{}_{}-{}.csv'.format(TRK, SPD, ITM)), 
     names=['Link']
@@ -26,7 +25,7 @@ entriesNum = df.shape[0]
 # Load driver and mainpage
 ###############################################################################
 chrome_options = Options()
-chrome_options.add_argument("--headless")
+# chrome_options.add_argument("--headless")
 driver = webdriver.Chrome(DRV, options=chrome_options)
 driver.get(const.mainpage)
 a = ActionChains(driver)
@@ -70,7 +69,8 @@ for i in range(0, entriesNum):
     # Assemble result
     row = (str(authT), runtT, dateT, submT)
     entriesList.append(row)
-    print('\t{}: {}'.format(str(i+1).zfill(3), row))
+    # print('\t{}: {}'.format(str(i+1).zfill(3), row))
+driver.quit()
 ###############################################################################
 # Create and export dataframes
 ###############################################################################

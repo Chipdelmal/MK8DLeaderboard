@@ -85,3 +85,25 @@ def colorPaletteFromHexList(clist):
     clrs = [c(i) for i in clist]
     rvb = mcolors.LinearSegmentedColormap.from_list("", clrs)
     return rvb
+
+
+def titleSelector(TRK, SPD, ITM):
+    (track, speed, items) = ('', '', '')
+    # Tracks
+    if TRK == '48':
+        track = '48 Tracks'
+    elif TRK == '32':
+        track = '32 Tracks'
+    elif TRK == 'Nitro':
+        track = 'Nitro Tracks'
+    else:
+        track = 'Retro Tracks'
+    # Speeds
+    speed = SPD
+    # Items
+    if ITM == 'NoItems':
+        items = 'No Items'
+    else:
+        items = 'Items'
+    # Return
+    return '{}, {}, {}'.format(track, speed, items)

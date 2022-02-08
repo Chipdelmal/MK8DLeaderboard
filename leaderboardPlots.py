@@ -10,6 +10,7 @@ import matplotlib.pylab as ply
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import matplotlib.patches as patches
+import functions as fun
 
 (TRK, SPD, ITM) = (sys.argv[1], sys.argv[2], sys.argv[3])
 # (TRK, SPD, ITM) = ('48', '200cc', 'NoItems')
@@ -89,6 +90,11 @@ for dPos in vLines[1:]:
         fontdict=font, zorder=-10
     )
 # Axes ------------------------------------------------------------------------
+ax.text(
+    .5, .975, fun.titleSelector(TRK, SPD, ITM), 
+    transform=ax.transAxes, fontsize=10, color='#00000022',
+    ha='center', va='top'
+)
 ax.set_title("Mario Kart 8 Deluxe's Leaderboard History", fontsize=30)
 ax.set_xlabel("Date", fontsize=20); ax.set_ylabel("Rank", fontsize=20)
 fmt_month = mdates.MonthLocator((1, 4, 10))

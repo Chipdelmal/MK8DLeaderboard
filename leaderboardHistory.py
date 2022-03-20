@@ -8,9 +8,13 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common.exceptions import NoSuchElementException
+import functions as fun
 
-(TRK, SPD, ITM) = (sys.argv[1], sys.argv[2], sys.argv[3])
-# (TRK, SPD, ITM) = ('32', '200cc', 'NoItems')
+if fun.isNotebook():
+    (TRK, SPD, ITM) = ('48', '200cc', 'NoItems')
+else:
+    (TRK, SPD, ITM) = (sys.argv[1], sys.argv[2], sys.argv[3])
+###############################################################################
 (DRV, OUT) = (
     '/home/chipdelmal/Documents/GitHub/MK8DLeaderboard/chromedriver/chromedriver',
     '/home/chipdelmal/Documents/MK8D/Leaderboard/'
@@ -30,8 +34,11 @@ a = ActionChains(driver)
 ###############################################################################
 if TRK == '32':
     nxtBtn = '//*[@id="pending-caret-forward"]/div'
+    miscBtn = '//*[@id="miscellaneous"]/div'
     fltrBtn = driver.find_element_by_xpath(nxtBtn)
+    miscBtn = driver.find_element_by_xpath(miscBtn)
     fltrBtn.click()
+    miscBtn.click()
 catDict = const.catSelector(TRK)
 (trkBtn, spdBtn, itmBtn) = (
     driver.find_elements_by_xpath(catDict.get('trk'))[0],

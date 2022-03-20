@@ -6,14 +6,18 @@ import pandas as pd
 from datetime import date
 from random import shuffle
 from datetime import datetime
+from datetime import timedelta
 import matplotlib.pylab as ply
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import matplotlib.patches as patches
 import functions as fun
 
-(TRK, SPD, ITM) = (sys.argv[1], sys.argv[2], sys.argv[3])
-# (TRK, SPD, ITM) = ('48', '200cc', 'NoItems')
+if fun.isNotebook():
+    (TRK, SPD, ITM) = ('48', '200cc', 'NoItems')
+else:
+    (TRK, SPD, ITM) = (sys.argv[1], sys.argv[2], sys.argv[3])
+###############################################################################
 OUT = '/home/chipdelmal/Documents/MK8D/Leaderboard/'
 highName = 'chipdelmal'
 ###############################################################################
@@ -60,6 +64,14 @@ ax.text(
     ), 
     horizontalalignment='center', verticalalignment='top', fontsize=5
 )
+ax.text(
+    dates[-1]+timedelta(days=5), dfRnk.loc['chipdelmal'][-1], 
+    'Rank: {}\n{}/{:02d}/{:02d}'.format(
+        int(dfRnk.loc['chipdelmal'][-1]), 
+        dates[-1].year, dates[-1].month, dates[-1].day
+    ), 
+    horizontalalignment='left', verticalalignment='center', fontsize=5
+)
 # Styling ---------------------------------------------------------------------
 ax.hlines(
     [10, 25, 50, 100, 150, 200, 250], 
@@ -91,11 +103,11 @@ for dPos in vLines[1:]:
     )
 # Axes ------------------------------------------------------------------------
 ax.text(
-    .5, .975, fun.titleSelector(TRK, SPD, ITM), 
+    .5, .975, '{} @ [{}]'.format(highName, fun.titleSelector(TRK, SPD, ITM)), 
     transform=ax.transAxes, fontsize=10, color='#00000022',
-    ha='center', va='top'
+    ha='center', va='top', zorder=100
 )
-ax.set_title("Mario Kart 8 Deluxe's Leaderboard History", fontsize=30)
+ax.set_title("Mario Kart 8 Deluxe's Leaderboard Timeline", fontsize=27.5)
 ax.set_xlabel("Date", fontsize=20); ax.set_ylabel("Rank", fontsize=20)
 fmt_month = mdates.MonthLocator((1, 4, 10))
 ax.xaxis.set_minor_locator(fmt_month)

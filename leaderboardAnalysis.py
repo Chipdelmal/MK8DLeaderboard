@@ -2,9 +2,13 @@
 import sys
 from os import path
 import pandas as pd
+import functions as fun
 
-(TRK, SPD, ITM) = (sys.argv[1], sys.argv[2], sys.argv[3])
-# (TRK, SPD, ITM) = ('Retro', '200cc', 'NoItems')
+if fun.isNotebook():
+    (TRK, SPD, ITM) = ('48', '200cc', 'NoItems')
+else:
+    (TRK, SPD, ITM) = (sys.argv[1], sys.argv[2], sys.argv[3])
+###############################################################################
 OUT = '/home/chipdelmal/Documents/MK8D/Leaderboard/'
 ###############################################################################
 # Read file

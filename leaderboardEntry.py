@@ -7,10 +7,13 @@ from os import path
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.action_chains import ActionChains
+import functions as fun
 
-
-(TRK, SPD, ITM) = (sys.argv[1], sys.argv[2], sys.argv[3])
-# (TRK, SPD, ITM) = ('Bonus', '200cc', 'NoItems')
+if fun.isNotebook():
+    (TRK, SPD, ITM) = ('48', '200cc', 'NoItems')
+else:
+    (TRK, SPD, ITM) = (sys.argv[1], sys.argv[2], sys.argv[3])
+###############################################################################
 BASE_URL = 'https://www.speedrun.com'
 (DRV, OUT) = (
     '/home/chipdelmal/Documents/GitHub/MK8DLeaderboard/chromedriver/chromedriver',
